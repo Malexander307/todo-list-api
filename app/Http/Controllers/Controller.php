@@ -20,7 +20,7 @@ class Controller extends BaseController
         ]);
     }
 
-    public function errorResponse(mixed $data, string $message = 'success',int $status = 500): Response
+    public function errorResponse(string $message = 'success',int $status = 500): Response
     {
         return response([
             'status' => $status,
