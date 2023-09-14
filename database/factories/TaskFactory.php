@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\TaskStatus;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -28,7 +29,8 @@ class TaskFactory extends Factory
             'title' => $this->faker->text(50),
             'description' => $this->faker->text(),
             'completed_at' => $status === TaskStatus::DONE ? now() : null,
-            'parent_id' => $this->getParentId()
+            'parent_id' => $this->getParentId(),
+            'user_id' => User::get('id')->random()->id
         ];
     }
 
