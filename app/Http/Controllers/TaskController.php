@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TaskStatus;
+use App\Http\Filters\TaskFilter;
 use App\Http\Requests\TaskCreateUpdateRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
@@ -12,9 +13,9 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(TaskFilter $filter)
     {
-        return TaskResource::collection(Task::where('user_id', \Auth::id())->get());
+        return TaskResource::collection(Task::filter($filter)->where('user_id', \Auth::id())->get());
     }
 
     /**
@@ -22,7 +23,7 @@ class TaskController extends Controller
      */
     public function store(TaskCreateUpdateRequest $request): TaskResource
     {
-        return new TaskResource(Task::create($request->validated()));
+        return new TaskResource(Task::create($request->validationData()));
     }
 
     /**

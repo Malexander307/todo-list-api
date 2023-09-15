@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\TaskStatus;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class TaskCreateUpdateRequest extends Request
@@ -25,7 +26,7 @@ class TaskCreateUpdateRequest extends Request
     protected function passedValidation(): void
     {
         $this->merge([
-            'user_id' => \Auth::id(),
+            'user_id' => Auth::id(),
             'status' => TaskStatus::TODO->value
         ]);
     }

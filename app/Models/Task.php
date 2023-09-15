@@ -43,4 +43,9 @@ class Task extends Model
         return $this->belongsTo(Task::class, 'parent_id');
     }
 
+    public function scopeFilter($query, $filter)
+    {
+        return $filter->apply($query);
+    }
+
 }
