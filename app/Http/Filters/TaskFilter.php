@@ -21,7 +21,7 @@ class TaskFilter extends Filter
         return $this->builder->where('priority', '<', $value);
     }
 
-    public function status(TaskStatus $value): \Illuminate\Database\Eloquent\Builder
+    public function status(string $value): \Illuminate\Database\Eloquent\Builder
     {
         return $this->builder->where('status', $value);
     }

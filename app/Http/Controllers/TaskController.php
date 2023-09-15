@@ -7,6 +7,7 @@ use App\Http\Filters\TaskFilter;
 use App\Http\Requests\TaskCreateUpdateRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
+use http\Client\Response;
 
 class TaskController extends Controller
 {
@@ -48,15 +49,24 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Task $task): bool
+    public function destroy(Task $task): \Illuminate\Http\Response|bool
     {
         $this->authorize('delete', $task);
+
+        if ($task->status === TaskStatus::DONE) {
+            return \response(['message' => 'You can`t delete done task']);
+        }
+
         return $task->delete();
     }
 
-    public function markAsDone(Task $task): TaskResource
+    public function markAsDone(Task $task): TaskResource|\Illuminate\Http\Response
     {
         $this->authorize('update', $task);
+
+        if ($task->children()->where('status', TaskStatus::TODO)->first()) {
+            return \response(['message' => 'You can`t mark as completed this task when it has uncompleted subtasks']);
+        }
 
         $task->status = TaskStatus::DONE;
         $task->completed_at = now();
