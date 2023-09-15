@@ -19,3 +19,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
+
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('/tasks', \App\Http\Controllers\TaskController::class);
+    Route::patch('/tasks/mark-completed/{task}', [\App\Http\Controllers\TaskController::class, 'markAsDone']);
+});
